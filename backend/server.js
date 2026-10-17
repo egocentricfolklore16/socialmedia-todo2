@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const tasksRoutes = require('./routes/tasks');
 const calendarRoutes = require('./routes/calendar');
 const notificationsRoutes = require('./routes/notifications');
+const settingsRoutes = require('./routes/settings');
 const { checkHolidaysAndNotify } = require('./services/holidayService');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/auth', authRoutes);
 app.use('/api/tasks', tasksRoutes);
 app.use('/api/calendar', calendarRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

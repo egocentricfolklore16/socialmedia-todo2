@@ -1,0 +1,14 @@
+[Push] VAPID environment variables missing or incomplete.
+[Holiday] No Google tokens stored — skipping holiday check.
+(node:336322) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+🚀 SocialTodo Backend running on http://localhost:5000
+📅 Google Calendar integration: active
+🔔 Push notifications: active
+
+[Holiday] No upcoming holidays found.
+[Calendar] Error fetching events: Not authenticated with Google.
+[Holiday] No Google tokens stored — skipping holiday check.
+[Calendar] Error fetching events: Not authenticated with Google.
+[Holiday] No Google tokens stored — skipping holiday check.

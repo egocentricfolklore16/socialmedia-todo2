@@ -14,30 +14,40 @@ router.post('/', (req, res) => {
   const {
     title,
     description = '',
+    notes = '',
+    campaign = '',
+    tags = [],
     dueDate,
-    platform = 'general',  // instagram | twitter | linkedin | facebook | tiktok | general
+    platform = 'general',  // instagram | twitter | linkedin | facebook | tiktok | general | youtube
     priority = 'medium',   // low | medium | high
     status = 'todo',       // todo | in-progress | done
     calendarEventId = null,
     hashtags = [],
-    contentType = 'post',  // post | reel | story | thread | video
+    contentType = 'post',  // post | reel | story | thread | video | live | newsletter
   } = req.body;
 
   if (!title?.trim()) {
     return res.status(400).json({ error: 'Task title is required.' });
   }
 
+  const allowedPlatforms = ['instagram', 'twitter', 'linkedin', 'facebook', 'tiktok', 'youtube', 'general'];
+  const allowedPriorities = ['low', 'medium', 'high'];
+  const allowedStatuses = ['todo', 'in-progress', 'done'];
+
   const newTask = {
     id: uuidv4(),
-    title: title.trim(),
-    description,
-    dueDate: dueDate || null,
-    platform,
-    priority,
-    status,
-    calendarEventId,
-    hashtags,
-    contentType,
+    title: String(title).trim(),
+    description: String(description || ''),
+    notes: String(notes || ''),
+    campaign: String(campaign || '').trim(),
+    tags: Array.isArray(tags) ? tags.map(t => String(t).trim()).filter(Boolean) : [],
+    dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+    platform: allowedPlatforms.includes(platform?.toLowerCase()) ? platform.toLowerCase() : 'general',
+    priority: allowedPriorities.includes(priority?.toLowerCase()) ? priority.toLowerCase() : 'medium',
+    status: allowedStatuses.includes(status?.toLowerCase()) ? status.toLowerCase() : 'todo',
+    calendarEventId: calendarEventId || null,
+    hashtags: Array.isArray(hashtags) ? hashtags.map(h => String(h).trim().replace(/^#/, '')).filter(Boolean) : [],
+    contentType: String(contentType || 'post').toLowerCase(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -58,11 +68,27 @@ router.patch('/:id', (req, res) => {
     return res.status(404).json({ error: 'Task not found.' });
   }
 
+  const existing = tasks[index];
+  const body = req.body;
+
+  const allowedPlatforms = ['instagram', 'twitter', 'linkedin', 'facebook', 'tiktok', 'youtube', 'general'];
+  const allowedPriorities = ['low', 'medium', 'high'];
+  const allowedStatuses = ['todo', 'in-progress', 'done'];
+
   const updatedTask = {
-    ...tasks[index],
-    ...req.body,
-    id: tasks[index].id,          // prevent id override
-    createdAt: tasks[index].createdAt,
+    ...existing,
+    ...body,
+    id: existing.id,
+    title: body.title !== undefined ? String(body.title).trim() : existing.title,
+    description: body.description !== undefined ? String(body.description) : existing.description,
+    notes: body.notes !== undefined ? String(body.notes) : (existing.notes || ''),
+    campaign: body.campaign !== undefined ? String(body.campaign).trim() : (existing.campaign || ''),
+    tags: body.tags !== undefined ? (Array.isArray(body.tags) ? body.tags.map(t => String(t).trim()).filter(Boolean) : []) : (existing.tags || []),
+    platform: body.platform ? (allowedPlatforms.includes(body.platform.toLowerCase()) ? body.platform.toLowerCase() : existing.platform) : existing.platform,
+    priority: body.priority ? (allowedPriorities.includes(body.priority.toLowerCase()) ? body.priority.toLowerCase() : existing.priority) : existing.priority,
+    status: body.status ? (allowedStatuses.includes(body.status.toLowerCase()) ? body.status.toLowerCase() : existing.status) : existing.status,
+    dueDate: body.dueDate !== undefined ? (body.dueDate ? new Date(body.dueDate).toISOString() : null) : existing.dueDate,
+    createdAt: existing.createdAt,
     updatedAt: new Date().toISOString(),
   };
 

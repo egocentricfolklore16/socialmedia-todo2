@@ -10,6 +10,16 @@ const DATA_DIR = path.join(__dirname, '../data');
 const TASKS_FILE = path.join(DATA_DIR, 'tasks.json');
 const TOKENS_FILE = path.join(DATA_DIR, 'tokens.json');
 const SUBSCRIPTIONS_FILE = path.join(DATA_DIR, 'subscriptions.json');
+const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+
+const DEFAULT_SETTINGS = {
+  defaultPlatform: 'instagram',
+  timezone: 'UTC',
+  notificationPreferences: {
+    holidayAlerts: true,
+    taskReminders: true,
+  },
+};
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 function readJSON(file, fallback = {}) {
@@ -22,6 +32,10 @@ function readJSON(file, fallback = {}) {
 }
 
 function writeJSON(file, data) {
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
   fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
 }
 
@@ -67,8 +81,22 @@ function removeSubscription(endpoint) {
   writeJSON(SUBSCRIPTIONS_FILE, subs);
 }
 
+// ── Settings ─────────────────────────────────────────────────────────────────
+function getSettings() {
+  const settings = readJSON(SETTINGS_FILE, DEFAULT_SETTINGS);
+  return { ...DEFAULT_SETTINGS, ...settings };
+}
+
+function saveSettings(settings) {
+  const current = getSettings();
+  const updated = { ...current, ...settings };
+  writeJSON(SETTINGS_FILE, updated);
+  return updated;
+}
+
 module.exports = {
   getTasks, saveTasks,
   getTokens, saveTokens, clearTokens,
   getSubscriptions, addSubscription, removeSubscription,
+  getSettings, saveSettings,
 };

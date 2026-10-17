@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
+import { Sparkles, Calendar, X } from 'lucide-react';
 
 export default function HolidayBanner() {
   const [holidays, setHolidays] = useState([]);
@@ -19,7 +20,7 @@ export default function HolidayBanner() {
   if (loading || visible.length === 0) return null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
       {visible.map(holiday => {
         const dateStr = holiday.start?.date || holiday.start?.dateTime;
         const date = dateStr ? format(parseISO(dateStr), 'EEEE, MMMM d') : '';
@@ -28,28 +29,42 @@ export default function HolidayBanner() {
         return (
           <div key={holiday.id} style={{
             background: isToday
-              ? 'linear-gradient(135deg, #78350f22, #92400e22)'
-              : 'linear-gradient(135deg, #1e293b, #1a2744)',
-            border: `1px solid ${isToday ? '#f59e0b55' : '#6366f133'}`,
-            borderLeft: `4px solid ${isToday ? '#f59e0b' : '#6366f1'}`,
-            borderRadius: 10,
+              ? 'rgba(245, 158, 11, 0.1)'
+              : 'var(--bg-card)',
+            border: `1px solid ${isToday ? 'rgba(245, 158, 11, 0.3)' : 'var(--border-default)'}`,
+            borderLeft: `4px solid ${isToday ? 'var(--status-todo)' : 'var(--accent)'}`,
+            borderRadius: 'var(--radius-md)',
             padding: '14px 18px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 12,
+            boxShadow: 'var(--shadow-sm)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: '1.5rem' }}>{isToday ? '🎉' : '📅'}</span>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: 'var(--radius-sm)',
+                background: isToday ? 'rgba(245, 158, 11, 0.18)' : 'var(--accent-light)',
+                color: isToday ? 'var(--status-todo)' : 'var(--accent)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                {isToday ? <Sparkles size={18} /> : <Calendar size={18} />}
+              </div>
+
               <div>
-                <div style={{ fontWeight: 600, color: '#e2e8f0', fontSize: '0.9rem' }}>
-                  {isToday ? 'Today is a holiday! ' : 'Upcoming holiday: '}
-                  <span style={{ color: isToday ? '#fbbf24' : '#a5b4fc' }}>
+                <div style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: 'var(--text-sm)' }}>
+                  {isToday ? 'Today is a Holiday: ' : 'Upcoming Holiday: '}
+                  <span style={{ color: isToday ? 'var(--status-todo)' : 'var(--accent)', fontWeight: 700 }}>
                     {holiday.summary}
                   </span>
                 </div>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: 2 }}>
-                  📅 {date} — Plan your social media content in advance!
+                <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 2 }}>
+                  {date} — Prepare special promotional or holiday social media content in advance!
                 </div>
               </div>
             </div>
@@ -59,14 +74,18 @@ export default function HolidayBanner() {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#64748b',
+                color: 'var(--text-muted)',
                 cursor: 'pointer',
-                fontSize: '1.1rem',
-                padding: 4,
+                padding: 6,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 'var(--radius-xs)',
               }}
+              aria-label="Dismiss banner"
               title="Dismiss"
             >
-              ✕
+              <X size={16} />
             </button>
           </div>
         );
