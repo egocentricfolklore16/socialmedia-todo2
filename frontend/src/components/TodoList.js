@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { format, isPast, isToday } from 'date-fns';
 import { useApp } from '../context/AppContext';
 import TaskForm from './TaskForm';
-import { PlatformBadge, PlatformSelect } from './PlatformBadge';
+import { PlatformBadge } from './PlatformBadge';
 
 const PRIORITY_CONFIG = {
   high:   { label: 'High',   color: '#ef4444', emoji: '🔴' },
