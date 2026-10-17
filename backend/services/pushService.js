@@ -1,12 +1,23 @@
 const webpush = require('web-push');
 const { getSubscriptions, removeSubscription } = require('./store');
 
-// Configure VAPID details once
-webpush.setVapidDetails(
-  process.env.VAPID_EMAIL,
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+// Configure VAPID details if valid keys are provided
+if (process.env.VAPID_EMAIL && process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  try {
+    const subject = process.env.VAPID_EMAIL.startsWith('mailto:')
+      ? process.env.VAPID_EMAIL
+      : `mailto:${process.env.VAPID_EMAIL}`;
+    webpush.setVapidDetails(
+      subject,
+      process.env.VAPID_PUBLIC_KEY,
+      process.env.VAPID_PRIVATE_KEY
+    );
+  } catch (err) {
+    console.warn('[Push] VAPID initialization skipped:', err.message);
+  }
+} else {
+  console.warn('[Push] VAPID environment variables missing or incomplete.');
+}
 
 /**
  * Send a push notification to ALL registered subscriptions.

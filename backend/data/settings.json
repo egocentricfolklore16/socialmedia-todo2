@@ -1,0 +1,8 @@
+{
+  "defaultPlatform": "linkedin",
+  "timezone": "UTC",
+  "notificationPreferences": {
+    "holidayAlerts": true,
+    "taskReminders": true
+  }
+}

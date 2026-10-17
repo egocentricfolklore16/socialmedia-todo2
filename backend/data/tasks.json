@@ -1,0 +1,36 @@
+[
+  {
+    "id": "e2595a10-a8a2-446c-ad30-e71a0ab0b619",
+    "title": "Q4 Growth Launch",
+    "description": "",
+    "notes": "Drafting caption for Q4 SaaS launch",
+    "campaign": "Q4 Launch",
+    "tags": [],
+    "dueDate": null,
+    "platform": "linkedin",
+    "priority": "medium",
+    "status": "todo",
+    "calendarEventId": null,
+    "hashtags": [],
+    "contentType": "post",
+    "createdAt": "2026-10-17T21:09:46.554Z",
+    "updatedAt": "2026-10-17T21:09:46.554Z"
+  },
+  {
+    "id": "db807a6e-2863-42b5-a24e-48eee209cabb",
+    "title": "Q4 Product Launch Announcement",
+    "description": "",
+    "notes": "🚀 Exciting news! We are launching our brand new platform feature today. Check it out!",
+    "campaign": "Q4 Launch",
+    "tags": [],
+    "dueDate": null,
+    "platform": "linkedin",
+    "priority": "medium",
+    "status": "todo",
+    "calendarEventId": null,
+    "hashtags": [],
+    "contentType": "post",
+    "createdAt": "2026-10-17T21:14:05.295Z",
+    "updatedAt": "2026-10-17T21:14:05.295Z"
+  }
+]
